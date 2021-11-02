@@ -4,7 +4,7 @@ defmodule ApiApp.Accounts.User do
   alias ApiApp.Accounts.User
 
   import Comeonin.Bcrypt, only: [hashpwsalt: 1]
-
+  @primary_key{:id, :binary_id, autogenerate: true}
   schema "users" do
     field :email, :string
     field :password_hash, :string

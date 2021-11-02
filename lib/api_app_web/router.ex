@@ -1,5 +1,6 @@
 defmodule ApiAppWeb.Router do
   use ApiAppWeb, :router
+  alias ApiAppWeb.ApiAuthPipeline
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -8,6 +9,10 @@ defmodule ApiAppWeb.Router do
     plug :put_root_layout, {ApiAppWeb.LayoutView, :root}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
+  end
+
+  pipeline :jwt_authenticated do
+    plug ApiAuthPipeline
   end
 
   pipeline :api do
@@ -26,6 +31,11 @@ defmodule ApiAppWeb.Router do
 
     post "/sign_up", UserController, :create
     post "/sign_in", UserController, :sign_in
+  end
+
+  scope "/api/v1", ApiAppWeb do
+    pipe_through [:api, :jwt_authenticated]
+
     resources "/employees", EmployeeController, except: [:new, :edit]
   end
 
