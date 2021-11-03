@@ -14,6 +14,10 @@ defmodule ApiAppWeb.EmployeeView do
     %{data: render_one(employee, EmployeeView, "employee.json")}
   end
 
+  def render("show.json", _) do
+    %{status: 400, message: "Emploee not found"}
+  end
+
   def render("employee.json", %{employee: employee}) do
     %{
       id: employee.id,

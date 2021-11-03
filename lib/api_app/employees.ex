@@ -36,7 +36,17 @@ defmodule ApiApp.Employees do
       ** (Ecto.NoResultsError)
 
   """
-  def get_employee!(id), do: Repo.get!(Employee, id)
+  def get_employee!(id) do
+    try do
+      result =
+        Repo.get!(Employee, id)
+
+      result
+    rescue
+      Ecto.Query.CastError ->
+        nil
+    end
+  end
 
   @doc """
   Creates a employee.

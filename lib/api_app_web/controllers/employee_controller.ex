@@ -22,8 +22,12 @@ defmodule ApiAppWeb.EmployeeController do
   end
 
   def show(conn, %{"id" => id}) do
-    employee = Employees.get_employee!(id)
-    render(conn, "show.json", employee: employee)
+    emp = Employees.get_employee!(id)
+    if Employees.get_employee!(id) do
+      render(conn, "show.json", employee: emp)
+    else
+      {:error, :not_found}
+    end
   end
 
   def update(conn, %{"id" => id, "employee" => employee_params}) do
